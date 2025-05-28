@@ -47,14 +47,25 @@
       <p><strong>Monto final:</strong> <span id="montoFinal"></span></p>
       <p><em>No olvides que el plazo para el pago es de diez días de pronunciada la sentencia.</em></p>
 
-      <button id="descuentoSexto">Descontar 1/6 por Terminación anticipada</button>
-      <button id="descuentoSeptimo">Descontar 1/7 por Conclusión anticipada</button>
-      <p><strong>Resultado con descuento:</strong> <span id="resultadoDescuento"></span></p>
-
       <div class="botones">
         <button id="copiar">Copiar resultado</button>
         <button id="whatsapp">Compartir por WhatsApp</button>
         <button id="nuevo">Nuevo cálculo</button>
+      </div>
+
+      <button id="descuentoSexto">Descontar 1/6 por Terminación anticipada</button>
+      <button id="descuentoSeptimo">Descontar 1/7 por Conclusión anticipada</button>
+      <p><strong>Resultado con descuento:</strong></p>
+      <ul>
+        <li><strong>Tipo de descuento:</strong> <span id="tipoDescuento"></span></li>
+        <li><strong>Monto descontado:</strong> <span id="montoDescontado"></span></li>
+        <li><strong>Monto total con descuento:</strong> <span id="resultadoDescuento"></span></li>
+      </ul>
+
+      <div class="botones" id="botonesDescuento" style="display:none">
+        <button id="copiarDescuento">Copiar resultado con descuento</button>
+        <button id="whatsappDescuento">Compartir por WhatsApp resultado con descuento</button>
+        <button id="nuevoDescuento">Nuevo cálculo</button>
       </div>
     </div>
   </main>
@@ -70,6 +81,9 @@
       const cantidadDiasSpan = document.getElementById('cantidadDias');
       const montoFinalSpan = document.getElementById('montoFinal');
       const resultadoDescuento = document.getElementById('resultadoDescuento');
+      const tipoDescuentoSpan = document.getElementById('tipoDescuento');
+      const montoDescontadoSpan = document.getElementById('montoDescontado');
+      const botonesDescuento = document.getElementById('botonesDescuento');
 
       const calcular = () => {
         let haber = parseFloat(haberMensualInput.value.replace(/[^\d.]/g, ''));
@@ -110,19 +124,18 @@
         haberPredefinido.value = '';
       });
 
-      document.getElementById('descuentoSexto').addEventListener('click', () => {
+      const aplicarDescuento = (divisor, tipoTexto) => {
         const monto = calcular();
         if (!monto) return;
-        const descuento = Math.ceil((monto / 6) * 100) / 100;
+        const descuento = Math.ceil((monto / divisor) * 100) / 100;
+        tipoDescuentoSpan.textContent = tipoTexto;
+        montoDescontadoSpan.textContent = `S/${descuento.toFixed(2)}`;
         resultadoDescuento.textContent = `S/${(monto - descuento).toFixed(2)}`;
-      });
+        botonesDescuento.style.display = 'block';
+      };
 
-      document.getElementById('descuentoSeptimo').addEventListener('click', () => {
-        const monto = calcular();
-        if (!monto) return;
-        const descuento = Math.ceil((monto / 7) * 100) / 100;
-        resultadoDescuento.textContent = `S/${(monto - descuento).toFixed(2)}`;
-      });
+      document.getElementById('descuentoSexto').addEventListener('click', () => aplicarDescuento(6, '1/6 por Terminación anticipada'));
+      document.getElementById('descuentoSeptimo').addEventListener('click', () => aplicarDescuento(7, '1/7 por Conclusión anticipada'));
 
       document.getElementById('copiar').addEventListener('click', () => {
         const text = `Valor de cada día-multa: ${valorDiaMultaSpan.textContent}\nCantidad de días-multa: ${cantidadDiasSpan.textContent}\nMonto final: ${montoFinalSpan.textContent}`;
@@ -130,14 +143,28 @@
       });
 
       document.getElementById('whatsapp').addEventListener('click', () => {
-        const text = `Valor de cada día-multa: ${valorDiaMultaSpan.textContent}\nCantidad de días-multa: ${cantidadDiasSpan.textContent}\nMonto final: ${montoFinalSpan.textContent}`;
+        const text = `Víctor Siu te brinda el resultado:\nHaber diario: ${haberDiarioSpan.textContent}\nValor de cada día-multa: ${valorDiaMultaSpan.textContent}\nCantidad de días-multa: ${cantidadDiasSpan.textContent}\nMonto final: ${montoFinalSpan.textContent}`;
         window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
       });
 
-      document.getElementById('nuevo').addEventListener('click', () => {
+      const limpiarTodo = () => {
         document.querySelectorAll('input').forEach(i => i.value = '');
         haberPredefinido.value = '';
-        haberDiarioSpan.textContent = valorDiaMultaSpan.textContent = cantidadDiasSpan.textContent = montoFinalSpan.textContent = resultadoDescuento.textContent = '';
+        haberDiarioSpan.textContent = valorDiaMultaSpan.textContent = cantidadDiasSpan.textContent = montoFinalSpan.textContent = resultadoDescuento.textContent = tipoDescuentoSpan.textContent = montoDescontadoSpan.textContent = '';
+        botonesDescuento.style.display = 'none';
+      };
+
+      document.getElementById('nuevo').addEventListener('click', limpiarTodo);
+      document.getElementById('nuevoDescuento').addEventListener('click', limpiarTodo);
+
+      document.getElementById('copiarDescuento').addEventListener('click', () => {
+        const text = `Tipo de descuento: ${tipoDescuentoSpan.textContent}\nMonto descontado: ${montoDescontadoSpan.textContent}\nMonto con descuento: ${resultadoDescuento.textContent}`;
+        navigator.clipboard.writeText(text);
+      });
+
+      document.getElementById('whatsappDescuento').addEventListener('click', () => {
+        const text = `Víctor Siu te brinda el resultado:\nTipo de descuento: ${tipoDescuentoSpan.textContent}\nMonto descontado: ${montoDescontadoSpan.textContent}\nMonto con descuento: ${resultadoDescuento.textContent}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
       });
 
       document.getElementById('themeToggle').addEventListener('change', e => {
