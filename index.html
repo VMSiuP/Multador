@@ -11,6 +11,147 @@
   <title>Multador Siu</title>
 </head>
 <body>
-  <!-- Contenido HTML omitido por brevedad -->
+  <header>
+    <label class="theme-switch">
+      <input type="checkbox" id="themeToggle"> Modo oscuro
+    </label>
+    <h1>Víctor Siu</h1>
+    <h2>Multador</h2>
+  </header>
+  <main>
+    <div class="input-group">
+      <label for="haberMensual">Haber mensual</label>
+      <input type="text" id="haberMensual" placeholder="S/" />
+      <select id="haberPredefinido">
+        <option value="">O elegir una opción</option>
+        <option value="930.00">RMV Abr18 = S/930.00</option>
+        <option value="1025.00">RMV May22 = S/1025.00</option>
+        <option value="1130.00">RMV Ene25 = S/1130.00</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label for="porcentaje">Porcentaje (25% - 50%)</label>
+      <input type="text" id="porcentaje" placeholder="%" />
+    </div>
+
+    <div class="input-group">
+      <label for="diasMulta">Cantidad de días-multa (10 - 730)</label>
+      <input type="number" id="diasMulta" min="10" max="730" />
+    </div>
+
+    <div class="resultados">
+      <p><strong>Haber diario:</strong> <span id="haberDiario"></span></p>
+      <p><strong>Valor de cada día-multa:</strong> <span id="valorDiaMulta"></span></p>
+      <p><strong>Cantidad de días-multa:</strong> <span id="cantidadDias"></span></p>
+      <p><strong>Monto final:</strong> <span id="montoFinal"></span></p>
+      <p><em>No olvides que el plazo para el pago es de diez días de pronunciada la sentencia.</em></p>
+
+      <button id="descuentoSexto">Descontar 1/6 por Terminación anticipada</button>
+      <button id="descuentoSeptimo">Descontar 1/7 por Conclusión anticipada</button>
+      <p><strong>Resultado con descuento:</strong> <span id="resultadoDescuento"></span></p>
+
+      <div class="botones">
+        <button id="copiar">Copiar resultado</button>
+        <button id="whatsapp">Compartir por WhatsApp</button>
+        <button id="nuevo">Nuevo cálculo</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const haberMensualInput = document.getElementById('haberMensual');
+      const haberPredefinido = document.getElementById('haberPredefinido');
+      const porcentajeInput = document.getElementById('porcentaje');
+      const diasMultaInput = document.getElementById('diasMulta');
+      const haberDiarioSpan = document.getElementById('haberDiario');
+      const valorDiaMultaSpan = document.getElementById('valorDiaMulta');
+      const cantidadDiasSpan = document.getElementById('cantidadDias');
+      const montoFinalSpan = document.getElementById('montoFinal');
+      const resultadoDescuento = document.getElementById('resultadoDescuento');
+
+      const calcular = () => {
+        let haber = parseFloat(haberMensualInput.value.replace(/[^\d.]/g, ''));
+        if (isNaN(haber)) {
+          haber = parseFloat(haberPredefinido.value);
+        }
+        if (!haber) return;
+
+        const haberDiario = haber / 30;
+        haberDiarioSpan.textContent = `S/${haberDiario.toFixed(2)}`;
+
+        let porcentaje = parseFloat(porcentajeInput.value.replace('%', ''));
+        if (porcentaje < 25 || porcentaje > 50 || isNaN(porcentaje)) return;
+
+        const valorDia = Math.ceil(haberDiario * (porcentaje / 100) * 100) / 100;
+        valorDiaMultaSpan.textContent = `S/${valorDia.toFixed(2)}`;
+
+        const dias = parseInt(diasMultaInput.value);
+        if (isNaN(dias) || dias < 10 || dias > 730) return;
+
+        const monto = Math.ceil(valorDia * dias * 100) / 100;
+        cantidadDiasSpan.textContent = dias;
+        montoFinalSpan.textContent = `S/${monto.toFixed(2)}`;
+
+        return monto;
+      };
+
+      [haberMensualInput, haberPredefinido, porcentajeInput, diasMultaInput].forEach(el => {
+        el.addEventListener('input', calcular);
+      });
+
+      haberPredefinido.addEventListener('change', () => {
+        haberMensualInput.value = '';
+        calcular();
+      });
+
+      haberMensualInput.addEventListener('input', () => {
+        haberPredefinido.value = '';
+      });
+
+      document.getElementById('descuentoSexto').addEventListener('click', () => {
+        const monto = calcular();
+        if (!monto) return;
+        const descuento = Math.ceil((monto / 6) * 100) / 100;
+        resultadoDescuento.textContent = `S/${(monto - descuento).toFixed(2)}`;
+      });
+
+      document.getElementById('descuentoSeptimo').addEventListener('click', () => {
+        const monto = calcular();
+        if (!monto) return;
+        const descuento = Math.ceil((monto / 7) * 100) / 100;
+        resultadoDescuento.textContent = `S/${(monto - descuento).toFixed(2)}`;
+      });
+
+      document.getElementById('copiar').addEventListener('click', () => {
+        const text = `Valor de cada día-multa: ${valorDiaMultaSpan.textContent}\nCantidad de días-multa: ${cantidadDiasSpan.textContent}\nMonto final: ${montoFinalSpan.textContent}`;
+        navigator.clipboard.writeText(text);
+      });
+
+      document.getElementById('whatsapp').addEventListener('click', () => {
+        const text = `Valor de cada día-multa: ${valorDiaMultaSpan.textContent}\nCantidad de días-multa: ${cantidadDiasSpan.textContent}\nMonto final: ${montoFinalSpan.textContent}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+      });
+
+      document.getElementById('nuevo').addEventListener('click', () => {
+        document.querySelectorAll('input').forEach(i => i.value = '');
+        haberPredefinido.value = '';
+        haberDiarioSpan.textContent = valorDiaMultaSpan.textContent = cantidadDiasSpan.textContent = montoFinalSpan.textContent = resultadoDescuento.textContent = '';
+      });
+
+      document.getElementById('themeToggle').addEventListener('change', e => {
+        document.body.classList.toggle('dark', e.target.checked);
+      });
+    });
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
+  </script>
 </body>
 </html>
