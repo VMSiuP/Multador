@@ -1,13 +1,71 @@
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
-  padding: 0;
+  padding: 1rem;
   background-color: #f9f9f9;
   color: #333;
   transition: background-color 0.3s, color 0.3s;
 }
+
 body.dark {
   background-color: #121212;
-  color: #f0f0f0;
+  color: #e0e0e0;
 }
-/* Estilos adicionales omitidos por brevedad */
+
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.theme-switch {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input, select, button {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #888;
+}
+
+button {
+  margin-top: 0.5rem;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.resultados p, .resultados ul {
+  margin: 0.5rem 0;
+}
+
+.botones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
