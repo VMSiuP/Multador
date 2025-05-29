@@ -1,10 +1,11 @@
 const CACHE_NAME = 'multador-cache-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/manifest.json',
-  '/icon.png'
+  './',
+  './index.html',
+  './styles.css',
+  './script.js',
+  './manifest.json',
+  './icon.png'
 ];
 
 self.addEventListener('install', event => {
