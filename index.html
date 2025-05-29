@@ -9,12 +9,108 @@
   <link rel="icon" href="icon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <title>Multador Siu</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f0f0f0;
+    }
+    header {
+      text-align: center;
+      margin-top: 1em;
+    }
+    .theme-switch {
+      display: block;
+      text-align: center;
+      margin-bottom: 0.5em;
+    }
+    main {
+      width: 100%;
+      max-width: 500px;
+      padding: 1em;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin: 1em;
+    }
+    .input-group {
+      margin-bottom: 1em;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3em;
+      font-weight: 500;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .resultados {
+      margin-top: 1em;
+    }
+    .botones {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      margin-top: 1em;
+    }
+    .botones button {
+      padding: 0.6em;
+      border: none;
+      border-radius: 5px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    #copiar, #copiarDescuento {
+      background-color: #FFD700;
+    }
+    #whatsapp, #whatsappDescuento {
+      background-color: #25D366;
+      color: white;
+    }
+    #nuevo, #nuevoDescuento {
+      background-color: #00bfff;
+      color: white;
+    }
+    #descuentoSexto, #descuentoSeptimo {
+      background-color: #e0e0e0;
+    }
+    .bonus {
+      margin-top: 2em;
+      padding-top: 1em;
+      border-top: 2px solid #ccc;
+    }
+    .bonus h3 {
+      margin-bottom: 0.5em;
+    }
+    body.dark {
+      background-color: #121212;
+      color: white;
+    }
+    body.dark main {
+      background-color: #1e1e1e;
+    }
+    body.dark input, body.dark select {
+      background-color: #2c2c2c;
+      color: white;
+      border-color: #555;
+    }
+    body.dark .botones button {
+      color: black;
+    }
+  </style>
 </head>
 <body>
+  <div class="theme-switch">
+    <input type="checkbox" id="themeToggle"> <label for="themeToggle">Modo oscuro</label>
+  </div>
   <header>
-    <label class="theme-switch">
-      <input type="checkbox" id="themeToggle"> Modo oscuro
-    </label>
     <h1>Víctor Siu</h1>
     <h2>Multador</h2>
   </header>
@@ -29,12 +125,10 @@
         <option value="1130.00">RMV Ene25 = S/1130.00</option>
       </select>
     </div>
-
     <div class="input-group">
       <label for="porcentaje">Porcentaje (25% - 50%)</label>
       <input type="text" id="porcentaje" placeholder="%" />
     </div>
-
     <div class="input-group">
       <label for="diasMulta">Cantidad de días-multa (10 - 730)</label>
       <input type="number" id="diasMulta" min="10" max="730" />
@@ -46,133 +140,31 @@
       <p><strong>Cantidad de días-multa:</strong> <span id="cantidadDias"></span></p>
       <p><strong>Monto final:</strong> <span id="montoFinal"></span></p>
       <p><em>No olvides que el plazo para el pago es de diez días de pronunciada la sentencia.</em></p>
-
       <div class="botones">
         <button id="copiar">Copiar resultado</button>
         <button id="whatsapp">Compartir por WhatsApp</button>
         <button id="nuevo">Nuevo cálculo</button>
       </div>
 
-      <button id="descuentoSexto">Descontar 1/6 por Terminación anticipada</button>
-      <button id="descuentoSeptimo">Descontar 1/7 por Conclusión anticipada</button>
-      <p><strong>Resultado con descuento:</strong></p>
-      <ul>
-        <li><strong>Tipo de descuento:</strong> <span id="tipoDescuento"></span></li>
-        <li><strong>Monto descontado:</strong> <span id="montoDescontado"></span></li>
-        <li><strong>Monto total con descuento:</strong> <span id="resultadoDescuento"></span></li>
-      </ul>
-
-      <div class="botones" id="botonesDescuento" style="display:none">
-        <button id="copiarDescuento">Copiar resultado con descuento</button>
-        <button id="whatsappDescuento">Compartir por WhatsApp resultado con descuento</button>
-        <button id="nuevoDescuento">Nuevo cálculo</button>
+      <div class="bonus">
+        <h3>Bonus</h3>
+        <button id="descuentoSexto">Descontar 1/6 por Terminación anticipada</button>
+        <button id="descuentoSeptimo">Descontar 1/7 por Conclusión anticipada</button>
+        <p><strong>Resultado con descuento:</strong></p>
+        <ul>
+          <li><strong>Tipo de descuento:</strong> <span id="tipoDescuento"></span></li>
+          <li><strong>Monto descontado:</strong> <span id="montoDescontado"></span></li>
+          <li><strong>Monto total con descuento:</strong> <span id="resultadoDescuento"></span></li>
+        </ul>
+        <div class="botones" id="botonesDescuento" style="display:none">
+          <button id="copiarDescuento">Copiar resultado con descuento</button>
+          <button id="whatsappDescuento">Compartir por WhatsApp resultado con descuento</button>
+          <button id="nuevoDescuento">Nuevo cálculo</button>
+        </div>
       </div>
     </div>
   </main>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const haberMensualInput = document.getElementById('haberMensual');
-      const haberPredefinido = document.getElementById('haberPredefinido');
-      const porcentajeInput = document.getElementById('porcentaje');
-      const diasMultaInput = document.getElementById('diasMulta');
-      const haberDiarioSpan = document.getElementById('haberDiario');
-      const valorDiaMultaSpan = document.getElementById('valorDiaMulta');
-      const cantidadDiasSpan = document.getElementById('cantidadDias');
-      const montoFinalSpan = document.getElementById('montoFinal');
-      const resultadoDescuento = document.getElementById('resultadoDescuento');
-      const tipoDescuentoSpan = document.getElementById('tipoDescuento');
-      const montoDescontadoSpan = document.getElementById('montoDescontado');
-      const botonesDescuento = document.getElementById('botonesDescuento');
-
-      const calcular = () => {
-        let haber = parseFloat(haberMensualInput.value.replace(/[^\d.]/g, ''));
-        if (isNaN(haber)) {
-          haber = parseFloat(haberPredefinido.value);
-        }
-        if (!haber) return;
-
-        const haberDiario = haber / 30;
-        haberDiarioSpan.textContent = `S/${haberDiario.toFixed(2)}`;
-
-        let porcentaje = parseFloat(porcentajeInput.value.replace('%', ''));
-        if (porcentaje < 25 || porcentaje > 50 || isNaN(porcentaje)) return;
-
-        const valorDia = Math.ceil(haberDiario * (porcentaje / 100) * 100) / 100;
-        valorDiaMultaSpan.textContent = `S/${valorDia.toFixed(2)}`;
-
-        const dias = parseInt(diasMultaInput.value);
-        if (isNaN(dias) || dias < 10 || dias > 730) return;
-
-        const monto = Math.ceil(valorDia * dias * 100) / 100;
-        cantidadDiasSpan.textContent = dias;
-        montoFinalSpan.textContent = `S/${monto.toFixed(2)}`;
-
-        return monto;
-      };
-
-      [haberMensualInput, haberPredefinido, porcentajeInput, diasMultaInput].forEach(el => {
-        el.addEventListener('input', calcular);
-      });
-
-      haberPredefinido.addEventListener('change', () => {
-        haberMensualInput.value = '';
-        calcular();
-      });
-
-      haberMensualInput.addEventListener('input', () => {
-        haberPredefinido.value = '';
-      });
-
-      const aplicarDescuento = (divisor, tipoTexto) => {
-        const monto = calcular();
-        if (!monto) return;
-        const descuento = Math.ceil((monto / divisor) * 100) / 100;
-        tipoDescuentoSpan.textContent = tipoTexto;
-        montoDescontadoSpan.textContent = `S/${descuento.toFixed(2)}`;
-        resultadoDescuento.textContent = `S/${(monto - descuento).toFixed(2)}`;
-        botonesDescuento.style.display = 'block';
-      };
-
-      document.getElementById('descuentoSexto').addEventListener('click', () => aplicarDescuento(6, '1/6 por Terminación anticipada'));
-      document.getElementById('descuentoSeptimo').addEventListener('click', () => aplicarDescuento(7, '1/7 por Conclusión anticipada'));
-
-      document.getElementById('copiar').addEventListener('click', () => {
-        const text = `Valor de cada día-multa: ${valorDiaMultaSpan.textContent}\nCantidad de días-multa: ${cantidadDiasSpan.textContent}\nMonto final: ${montoFinalSpan.textContent}`;
-        navigator.clipboard.writeText(text);
-      });
-
-      document.getElementById('whatsapp').addEventListener('click', () => {
-        const text = `Víctor Siu te brinda el resultado:\nHaber diario: ${haberDiarioSpan.textContent}\nValor de cada día-multa: ${valorDiaMultaSpan.textContent}\nCantidad de días-multa: ${cantidadDiasSpan.textContent}\nMonto final: ${montoFinalSpan.textContent}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
-      });
-
-      const limpiarTodo = () => {
-        document.querySelectorAll('input').forEach(i => i.value = '');
-        haberPredefinido.value = '';
-        haberDiarioSpan.textContent = valorDiaMultaSpan.textContent = cantidadDiasSpan.textContent = montoFinalSpan.textContent = resultadoDescuento.textContent = tipoDescuentoSpan.textContent = montoDescontadoSpan.textContent = '';
-        botonesDescuento.style.display = 'none';
-      };
-
-      document.getElementById('nuevo').addEventListener('click', limpiarTodo);
-      document.getElementById('nuevoDescuento').addEventListener('click', limpiarTodo);
-
-      document.getElementById('copiarDescuento').addEventListener('click', () => {
-        const text = `Tipo de descuento: ${tipoDescuentoSpan.textContent}\nMonto descontado: ${montoDescontadoSpan.textContent}\nMonto con descuento: ${resultadoDescuento.textContent}`;
-        navigator.clipboard.writeText(text);
-      });
-
-      document.getElementById('whatsappDescuento').addEventListener('click', () => {
-        const text = `Víctor Siu te brinda el resultado:\nTipo de descuento: ${tipoDescuentoSpan.textContent}\nMonto descontado: ${montoDescontadoSpan.textContent}\nMonto con descuento: ${resultadoDescuento.textContent}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
-      });
-
-      document.getElementById('themeToggle').addEventListener('change', e => {
-        document.body.classList.toggle('dark', e.target.checked);
-      });
-    });
-  </script>
-
+  <script src="script.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
