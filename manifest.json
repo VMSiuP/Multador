@@ -1,10 +1,11 @@
 {
   "name": "Multador Siu",
   "short_name": "Multador",
-  "start_url": ".",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
+  "description": "Calculadora de días-multa en PEN",
   "icons": [
     {
       "src": "icon.png",
