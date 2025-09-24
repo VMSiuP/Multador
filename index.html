@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   
-  <link rel="icon" href="./icons/icon-192x192.png" />
+  <link rel="icon" href="icons/icon-192x192.png" />
 </head>
 <body>
   <div class="theme-switch">
@@ -25,14 +25,14 @@
   <header>
     <h1>Víctor Siu</h1>
     <h2>Multador</h2>
-    <p class="header-description">Calcula automáticamente el valor de los días-multa a imponer.</p>
-    <p class="header-contact">Ponte en contacto con el creador mediante <a href="https://wa.me/51969761336">WhatsApp</a></p>
+    <p class="header-description">Calcula automáticamente el valor de los días-multa a imponer en la sentencia.</p>
+    <p class="header-contact">Ponte en contacto con el creador mediante <a href="https://wa.me/51969761336">WhatsApp al +51 969 761 336</a></p>
   </header>
   
   <main>
     <div class="input-group">
       <label for="haberMensual">Haber mensual (S/)</label>
-      <input type="number" id="haberMensual" inputmode="decimal" placeholder="Ej: 1405.25" step="0.01" />
+      <input type="number" id="haberMensual" inputmode="decimal" placeholder="Ej: 1025.00" step="0.01" />
       <select id="haberPredefinido">
         <option value="">O elegir una opción</option>
         <option value="930.00">RMV Abr18 = S/930.00</option>
@@ -87,5 +87,17 @@
   </main>
   
   <script src="script.js"></script>
+  <script>
+    // Registro del Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').then(registration => {
+          console.log('ServiceWorker registrado con éxito:', registration.scope);
+        }, err => {
+          console.log('Fallo en el registro de ServiceWorker:', err);
+        });
+      });
+    }
+  </script>
 </body>
 </html>
