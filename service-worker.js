@@ -1,13 +1,13 @@
-const CACHE_NAME = 'multador-cache-v2'; // Incrementa la versión si haces cambios futuros
+const CACHE_NAME = 'multador-cache-v3'; // ¡Importante! Cambia este número al actualizar.
 const urlsToCache = [
-  './',
-  './index.html',
-  './styles.css',
-  './script.js',
-  './manifest.json',
-  './icons/icon-192x192.png',
-  './icons/icon-512x512.png',
-  './icons/icon-maskable-512x512.png'
+  '.',
+  'index.html',
+  'styles.css',
+  'script.js',
+  'manifest.json',
+  'icons/icon-192x192.png',
+  'icons/icon-512x512.png',
+  'icons/icon-maskable-512x512.png'
 ];
 
 // Evento 'install': Guarda en caché los archivos base de la aplicación.
@@ -15,10 +15,11 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Cache abierto');
+        console.log('Cache abierto:', CACHE_NAME);
         return cache.addAll(urlsToCache);
       })
   );
+  self.skipWaiting(); // Forza al nuevo service worker a activarse inmediatamente.
 });
 
 // Evento 'activate': Limpia las cachés antiguas.
