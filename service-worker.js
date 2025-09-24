@@ -1,4 +1,4 @@
-const CACHE_NAME = 'multador-cache-v3'; // ¡Importante! Cambia este número al actualizar.
+const CACHE_NAME = 'multador-cache-v4'; // ¡Importante! Cambia este número al actualizar.
 const urlsToCache = [
   '.',
   'index.html',
